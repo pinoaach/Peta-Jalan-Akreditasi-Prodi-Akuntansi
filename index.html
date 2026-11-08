@@ -1,782 +1,487 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Peta Jalan Akreditasi Prodi Akuntansi</title>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
-[hidden]{display:none!important}
-#xl{background:var(--acc);color:var(--bg);border:0;border-radius:6px;padding:7px 12px;cursor:pointer;font-weight:500;margin-top:6px}
-:root{
---bg:#f4f6fa;--panel:#fff;--ink:#17203a;--mute:#5d6783;
---line:#dde2ee;--acc:#1f3864;--b0:#1f3864;--b1:#9dc3e6;
---ok:#2f8f4e;--run:#d99a00;--bad:#cf4b45;
---today:#e0a100;--soft:#eaeef6;color-scheme:light
+:root {
+  --navy:#17365d;
+  --blue:#245b91;
+  --light:#f2f6fc;
+  --white:#ffffff;
+  --text:#243247;
+  --muted:#718096;
+  --green:#16845b;
+  --yellow:#d38b18;
+  --red:#c94b52;
+  --border:#e1e8f0;
 }
-@media (prefers-color-scheme:dark){
-:root:not([data-theme="light"]){
---bg:#0f1524;--panel:#171f33;--ink:#e8ecf6;
---mute:#9aa5c3;--line:#2a3452;--acc:#8fb0ee;
---b0:#5b86d6;--b1:#2f4f7d;--soft:#1e2842;color-scheme:dark
-}}
-:root[data-theme="dark]{
---bg:#0f1524;--panel:#171f33;--ink:#e8ecf6;
---mute:#9aa5c3;--line:#2a3452;--acc:#8fb0ee;
---b0:#5b86d6;--b1:#2f4f7d;--soft:#1e2842;color-scheme:dark
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--light);
+  color:var(--text);
+  font-family:Arial,sans-serif;
 }
-:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*,*::before,*::after{box-sizing:inherit}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "IBM Plex Sans",system-ui,sans-serif}
-h1,h2,h3{font-family:"Bricolage Grotesque","IBM Plex Sans",sans-serif;margin:0;letter-spacing:-.01em}
-.wrap{max-width:1120px;margin:0 auto;padding:20px 16px 48px}
-header{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:flex-end;margin-bottom:18px}
-h1{font-size:clamp(24px,4vw,34px);line-height:1.15;max-width:22ch}
-.sub{color:var(--mute);margin:6px 0 0;max-width:60ch}
-.ctl{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--mute)}
-input,select,button{font:inherit;color:inherit}
-input[type=date],input[type=text],select{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:6px 8px;min-width:0}
-.pill{font-size:12px;color:var(--mute)}
-nav{display:flex;gap:4px;overflow-x:auto;border-bottom:1px solid var(--line);margin-bottom:22px}
-nav button{background:none;border:0;border-bottom:3px solid transparent;padding:10px 14px;cursor:pointer;color:var(--mute);font-weight:500;white-space:nowrap}
-nav button[aria-current=true]{color:var(--ink);border-color:var(--acc)}
-:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
-.hero{font-family:"Bricolage Grotesque",sans-serif;font-size:clamp(22px,3.4vw,30px);font-weight:600;margin:0 0 12px}
-.hero b{font-weight:700;color:var(--acc)}
-.seg{display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--soft)}
-.seg i{display:block;height:100%}
-.leg{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--mute);margin:8px 0 26px}
-.leg span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;background:var(--c)}
-.cols{display:grid;grid-template-columns:1.1fr .9fr;gap:32px}
-@media(max-width:820px){.cols{grid-template-columns:1fr;gap:24px}}
-h2{font-size:19px;margin:0 0 12px}
-.fr{display:grid;grid-template-columns:150px 1fr 56px;gap:10px;align-items:center;padding:7px 0;font-size:14px}
-.fr .seg{height:9px}
-.fr em{font-style:normal;color:var(--mute);text-align:right;font-variant-numeric:tabular-nums}
-.item{padding:9px 0;border-top:1px solid var(--line);font-size:14px}
-.item small{display:block;color:var(--mute)}
-.late{color:var(--bad);font-weight:600}
-.ms{list-style:none;margin:0;padding:0 0 0 18px;border-left:2px solid var(--line)}
-.ms li{position:relative;padding:0 0 14px 14px;font-size:14px}
-.ms li::before{content:"";position:absolute;left:-26px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--panel);border:2px solid var(--b0)}
-.ms li.d::before{background:var(--ok);border-color:var(--ok)}
-.ms li.o::before{border-color:var(--bad)}
-.ms small{display:block;color:var(--mute)}
-.gwrap{position:relative;overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
-.gin{position:relative;width:max-content;min-width:100%}
-.gr{display:flex;border-top:1px solid var(--line);height:30px;align-items:center}
-.gr.h{height:34px;border-top:0;position:relative}
-.gl{position:sticky;left:0;z-index:2;width:250px;flex:none;padding:0 10px;background:var(--panel);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px;border-right:1px solid var(--line)}
-.gl.f{font-weight:600;background:var(--soft)}
-.gt{position:relative;height:100%;flex:none;width:1040px;background-image:linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:20px 100%}
-.gt .mo{position:absolute;top:8px;font-size:11px;font-weight:600;color:var(--mute);padding-left:4px;border-left:1px solid var(--mute);height:18px}
-.bar{position:absolute;top:8px;height:14px;border-radius:3px}
-.bar.sp{top:12px;height:6px;background:var(--mute);opacity:.55}
-.tl{position:absolute;top:0;bottom:0;width:2px;background:var(--today);z-index:1;pointer-events:none}
-.tools{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px}
-.tbl{overflow-x:auto}
-table{border-collapse:collapse;width:100%;min-width:780px;font-size:14px}
-th{font-weight:600;font-size:12.5px;color:var(--mute);text-align:left;padding:6px 8px;border-bottom:2px solid var(--line)}
-td{padding:8px;border-top:1px solid var(--line);vertical-align:top}
-td small{display:block;color:var(--mute)}
-td input[type=text]{width:100%}
-tr.fh td{background:var(--soft);font-family:"Bricolage Grotesque",sans-serif;font-weight:600;padding:7px 8px}
-select.s-Selesai{border-color:var(--ok);color:var(--ok)}
-select.s-Berjalan{border-color:var(--run);color:var(--run)}
-select.s-Terkendala{border-color:var(--bad);color:var(--bad)}
-.chk{display:grid;grid-template-columns:24px 1fr 1fr;gap:8px;align-items:center;padding:7px 0;border-top:1px solid var(--line);font-size:14px}
-.chk input[type=checkbox]{width:18px;height:18px;accent-color:var(--ok)}
-.chk.on span{color:var(--mute);text-decoration:line-through}
-ol.n{padding-left:20px;max-width:75ch}
-ol.n li{margin-bottom:10px}
-#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:8px;font-size:13.5px;display:none;z-index:9}
-@media(prefers-reduced-motion:no-preference){.seg i{transition:width .4s}}
+.container{
+  max-width:1400px;
+  margin:auto;
+  padding:25px;
+}
+header{
+  background:linear-gradient(120deg,#142b4d,#285e91);
+  color:white;
+  padding:35px;
+  border-radius:20px;
+  margin-bottom:22px;
+  box-shadow:0 10px 25px #17365d25;
+}
+header h1{font-size:30px;margin:0 0 12px}
+header p{color:#dce9f7;margin:0}
+header input{
+  margin-top:18px;
+  padding:10px;
+  border:0;
+  border-radius:8px;
+}
+nav{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  background:white;
+  padding:10px;
+  border-radius:13px;
+  margin-bottom:22px;
+  box-shadow:0 3px 12px #17365d10;
+}
+nav button,.btn{
+  border:0;
+  background:#eaf0f7;
+  color:var(--navy);
+  padding:11px 16px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
+}
+nav button.active,.btn.primary{
+  background:var(--navy);
+  color:white;
+}
+nav button:hover,.btn:hover{opacity:.85}
+.card{
+  background:white;
+  padding:22px;
+  border-radius:15px;
+  margin-bottom:20px;
+  box-shadow:0 4px 15px #17365d0c;
+}
+h2{color:var(--navy);margin-top:0}
+h3{color:var(--blue)}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+  margin-bottom:20px;
+}
+.stat{
+  background:white;
+  padding:20px;
+  border-radius:13px;
+  border-left:5px solid var(--blue);
+}
+.stat strong{font-size:28px;display:block;color:var(--navy)}
+.stat span{font-size:13px;color:var(--muted)}
+.progress{
+  height:12px;
+  background:#e8edf4;
+  border-radius:20px;
+  overflow:hidden;
+}
+.progress div{height:100%;background:var(--green)}
+table{
+  border-collapse:collapse;
+  width:100%;
+  min-width:850px;
+  font-size:13px;
+}
+th{
+  background:var(--navy);
+  color:white;
+  text-align:left;
+  padding:13px;
+}
+td{
+  padding:11px;
+  border-bottom:1px solid var(--border);
+}
+tr:hover td{background:#f7faff}
+.table-wrap{
+  overflow-x:auto;
+  border:1px solid var(--border);
+  border-radius:10px;
+}
+input[type="text"],select,textarea{
+  width:100%;
+  padding:9px;
+  border:1px solid var(--border);
+  border-radius:7px;
+  background:white;
+}
+textarea{min-height:70px}
+.status-selesai{color:var(--green);font-weight:bold}
+.status-berjalan{color:var(--yellow);font-weight:bold}
+.status-terkendala{color:var(--red);font-weight:bold}
+.hidden{display:none}
+footer{
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+  padding:25px;
+}
+@media(max-width:800px){
+  .container{padding:12px}
+  header{padding:23px}
+  header h1{font-size:24px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  nav{overflow-x:auto;flex-wrap:nowrap}
+  nav button{white-space:nowrap}
+}
+@media(max-width:450px){
+  .stats{grid-template-columns:1fr 1fr}
+}
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="container">
+
 <header>
-<div>
-<h1>Peta Jalan Akreditasi Prodi Akuntansi</h1>
-<p class="sub">Seluruh persiapan akreditasi LAMEMBA untuk Status Terakreditasi: lima kriteria, DED, DKPS, dan fasilitas sarana prasarana. Jadwal, progres, dan bukti dalam satu tempat.</p>
-</div>
-<div class="ctl">
-<label for="st">Mulai proyek (disesuaikan ke hari Senin)</label>
-<input type="date" id="st">
-<span class="pill" id="sync"></span>
-<button id="xl" hidden>Unduh Excel</button>
-</div>
+  <h1>Peta Jalan Akreditasi Program Studi Akuntansi</h1>
+  <p>Universitas Pamulang – Program Studi Akuntansi</p>
+  <p>Dashboard pemantauan persiapan akreditasi, sarana prasarana, dokumen, dan kegiatan.</p>
+  <label for="tanggal">Tanggal mulai program:</label><br>
+  <input type="date" id="tanggal" value="2026-11-02">
+  <button class="btn" onclick="eksporCSV()">Unduh Laporan CSV</button>
 </header>
-<nav id="nav"></nav>
-<main id="app"></main>
+
+<nav id="menu">
+  <button class="active" onclick="buka('ringkasan',this)">Ringkasan</button>
+  <button onclick="buka('jadwal',this)">Jadwal Kegiatan</button>
+  <button onclick="buka('kriteria',this)">Kriteria Akreditasi</button>
+  <button onclick="buka('dokumen',this)">DED dan DKPS</button>
+  <button onclick="buka('fasilitas',this)">Sarana Prasarana</button>
+  <button onclick="buka('catatan',this)">Catatan</button>
+</nav>
+
+<section id="ringkasan" class="halaman">
+  <div class="stats">
+    <div class="stat"><strong id="total">0</strong><span>Total Kegiatan</span></div>
+    <div class="stat"><strong id="selesai">0</strong><span>Kegiatan Selesai</span></div>
+    <div class="stat"><strong id="berjalan">0</strong><span>Sedang Berjalan</span></div>
+    <div class="stat"><strong id="belum">0</strong><span>Belum Dimulai</span></div>
+  </div>
+  <div class="card">
+    <h2>Progres Persiapan Akreditasi</h2>
+    <div class="progress"><div id="bar" style="width:0%"></div></div>
+    <p id="persen">0% kegiatan selesai</p>
+  </div>
+  <div class="card">
+    <h2>Informasi Program</h2>
+    <p><b>Program:</b> Persiapan Akreditasi Program Studi Akuntansi</p>
+    <p><b>Unit:</b> Universitas Pamulang</p>
+    <p><b>Fokus:</b> Dokumen akreditasi, tata kelola, pendidikan, penelitian, pengabdian, dan sarana prasarana.</p>
+  </div>
+</section>
+
+<section id="jadwal" class="halaman hidden">
+  <div class="card">
+    <h2>Jadwal dan Pemantauan Kegiatan</h2>
+    <p>Perbarui status, penanggung jawab, dan catatan setiap kegiatan.</p>
+    <div class="table-wrap">
+      <table id="tabelKegiatan">
+        <thead>
+          <tr>
+            <th>No.</th><th>Bidang</th><th>Kegiatan</th>
+            <th>Waktu</th><th>Status</th><th>Penanggung Jawab</th><th>Catatan</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="kriteria" class="halaman hidden">
+  <div class="card">
+    <h2>Pemantauan Kriteria Akreditasi</h2>
+    <div class="table-wrap">
+      <table id="tabelKriteria">
+        <thead>
+          <tr><th>No.</th><th>Kriteria</th><th>Dokumen/Bukti</th><th>Status</th><th>Penanggung Jawab</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="dokumen" class="halaman hidden">
+  <div class="card">
+    <h2>Dokumen Evaluasi Diri (DED)</h2>
+    <div class="table-wrap">
+      <table id="tabelDED">
+        <thead><tr><th>No.</th><th>Bagian Dokumen</th><th>Status</th><th>Penanggung Jawab</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Dokumen Kinerja Program Studi (DKPS)</h2>
+    <div class="table-wrap">
+      <table id="tabelDKPS">
+        <thead><tr><th>No.</th><th>Bagian Dokumen</th><th>Status</th><th>Penanggung Jawab</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="fasilitas" class="halaman hidden">
+  <div class="card">
+    <h2>Pemantauan Sarana dan Prasarana</h2>
+    <div class="table-wrap">
+      <table id="tabelFasilitas">
+        <thead><tr><th>No.</th><th>Fasilitas</th><th>Kebutuhan/Bukti</th><th>Status</th><th>Catatan</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="catatan" class="halaman hidden">
+  <div class="card">
+    <h2>Catatan dan Tindak Lanjut</h2>
+    <textarea id="catatanUmum" placeholder="Tuliskan hasil rapat, kendala, keputusan, dan tindak lanjut..."></textarea>
+    <button class="btn primary" onclick="simpanCatatan()">Simpan Catatan</button>
+    <p id="pesanCatatan"></p>
+  </div>
+</section>
+
+<footer>
+  Dashboard Peta Jalan Akreditasi · Program Studi Akuntansi · Universitas Pamulang
+</footer>
 </div>
-<div id="toast" role="status"></div>
 
 <script>
-const BL=["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"],MS=864e5,W=20;
-
-const FAS=[
-"Persiapan Awal",
-"Tax Center",
-"Galeri Investasi",
-"Lab Praktikum Audit",
-"Lab Komputer (SPSS, SmartPLS, EViews)",
-"Ruang Konseling Akuntansi",
-"Persiapan Akhir",
-"Dokumen DED dan DKPS"
+const kegiatan = [
+["Persiapan Awal","Audit kondisi sarana dan prasarana",1,2],
+["Persiapan Awal","Pembentukan tim persiapan akreditasi",2,3],
+["Persiapan Awal","Penyusunan rencana anggaran dan kebutuhan",3,4],
+["Persiapan Awal","Pengajuan anggaran kepada pimpinan",5,8],
+["Tax Center","Penentuan ruang dan pengurus Tax Center",6,7],
+["Tax Center","Kerja sama dengan KPP Pratama atau DJP",7,12],
+["Tax Center","Pengadaan komputer dan perlengkapan",10,12],
+["Tax Center","Pelatihan relawan pajak",12,15],
+["Tax Center","Penyusunan SOP dan modul layanan",15,17],
+["Tax Center","Pelaksanaan layanan perpajakan",18,26],
+["Galeri Investasi","Penentuan mitra perusahaan sekuritas",6,8],
+["Galeri Investasi","Penandatanganan kerja sama dengan sekuritas",10,12],
+["Galeri Investasi","Pengadaan perangkat Galeri Investasi",12,16],
+["Galeri Investasi","Pelaksanaan edukasi pasar modal",23,43],
+["Laboratorium Audit","Penataan ruang laboratorium audit",10,12],
+["Laboratorium Audit","Pengadaan komputer dan perangkat kerja",12,16],
+["Laboratorium Audit","Penyusunan modul praktikum audit",18,21],
+["Laboratorium Audit","Pelaksanaan praktikum audit",27,39],
+["Laboratorium Komputer","Inventarisasi komputer dan perangkat lunak",6,8],
+["Laboratorium Komputer","Pengadaan lisensi perangkat lunak",8,12],
+["Laboratorium Komputer","Instalasi dan pengujian perangkat lunak",13,16],
+["Laboratorium Komputer","Penyusunan SOP laboratorium",18,20],
+["Ruang Konseling","Penentuan ruang dan tim konseling",15,17],
+["Ruang Konseling","Penataan ruang konseling",18,20],
+["Ruang Konseling","Penyusunan SOP layanan konseling",19,21],
+["Ruang Konseling","Pelaksanaan layanan konseling",27,52],
+["Persiapan Akhir","Pengumpulan dan pengarsipan bukti",23,43],
+["Persiapan Akhir","Penyusunan narasi sarana prasarana",40,43],
+["Persiapan Akhir","Simulasi visitasi internal",43,46],
+["Persiapan Akhir","Finalisasi dokumen akreditasi",47,52],
+["DED dan DKPS","Pembentukan tim penyusun DED dan DKPS",3,6],
+["DED dan DKPS","Pemetaan indikator dan bukti setiap kriteria",6,12],
+["DED dan DKPS","Verifikasi data dosen dan mahasiswa",12,20],
+["DED dan DKPS","Pengumpulan bukti setiap kriteria",18,40],
+["DED dan DKPS","Pengisian tabel DKPS",27,36],
+["DED dan DKPS","Penyusunan dokumen evaluasi diri",36,44],
+["DED dan DKPS","Penyuntingan akhir DED dan DKPS",49,52]
 ];
 
-const STS=["Belum Mulai","Berjalan","Selesai","Terkendala"];
-const SC={
-"Belum Mulai":"var(--b0)",
-Berjalan:"var(--run)",
-Selesai:"var(--ok)",
-Terkendala:"var(--bad)"
-};
-
-const A=`0|Audit kondisi sarana prasarana (gap analysis terhadap instrumen akreditasi)|Daftar kebutuhan dan kekurangan|0|1|2
-0|Pembentukan tim persiapan akreditasi dan penanggung jawab tiap fasilitas|SK Dekan/Rektor|0|2|3
-0|Penyusunan RAB, penentuan lokasi ruang, dan prioritas pengadaan|RAB dan layout ruang|0|3|4
-0|Pengajuan anggaran dan persetujuan pimpinan|Surat persetujuan anggaran|0|5|8
-1|Penentuan ruang, pengurus, dan SK pendirian Tax Center|SK, struktur organisasi|0|6|7
-1|Penjajakan dan penandatanganan MoU/PKS dengan KPP Pratama/Kanwil DJP|MoU/PKS|0|7|12
-1|Pengadaan komputer, printer, internet, dan perlengkapan ruang|BAST, foto ruang|0|10|12
-1|Pelatihan relawan pajak; persiapan akun dan akses Coretax, e-Filing, e-Bupot|Sertifikat, daftar relawan|0|12|15
-1|Penyusunan SOP, modul praktik, dan jadwal layanan|Dokumen SOP|0|15|17
-1|Layanan bantuan pelaporan SPT Tahunan (puncak kegiatan)|Laporan layanan, dokumentasi|1|18|26
-1|Tax Gathering, seminar, pelatihan pajak, dan pengabdian masyarakat|Laporan kegiatan|1|27|43
-2|Pemilihan mitra perusahaan sekuritas (anggota bursa) dan penentuan ruang|Surat penunjukan mitra|0|6|8
-2|Penandatanganan MoU dengan sekuritas, pengajuan pendirian Galeri Investasi|MoU, surat permohonan|0|10|12
-2|Pengadaan perangkat (monitor/TV, komputer, akses data pasar), desain ruang|BAST, foto ruang|0|12|16
-2|Pembukaan rekening dana nasabah dan akun simulasi mahasiswa/dosen|Daftar akun|0|16|17
-2|Peresmian (grand opening) dan pengesahan pengurus|SK, dokumentasi|0|20|21
-2|Sekolah pasar modal, simulasi trading, kompetisi, literasi investasi|Laporan kegiatan, daftar peserta|1|23|43
-3|Desain ruang simulasi kantor akuntan publik (meeting, kerja, arsip)|Layout ruang|0|10|12
-3|Pengadaan komputer, meja kerja, lemari arsip, perangkat presentasi|BAST, foto ruang|0|12|16
-3|Pengadaan software audit/analitik data (ACL/IDEA, Excel advanced) atau alternatif|Lisensi/bukti instalasi|0|16|20
-3|Penyusunan modul praktikum, studi kasus, dan kertas kerja audit|Modul praktikum|0|18|21
-3|Uji coba praktikum dan penyusunan SOP penggunaan lab|SOP, berita acara uji coba|0|23|25
-3|Pelaksanaan praktikum sesuai jadwal kuliah|Jadwal, daftar hadir, hasil kerja mahasiswa|1|27|39
-4|Inventarisasi spesifikasi PC dan kebutuhan software (SPSS, SmartPLS, EViews, Accurate/Zahir/MYOB, Stata/R)|Daftar kebutuhan|0|6|8
-4|Pengadaan lisensi resmi (cek skema lisensi akademik/kampus)|Bukti pembelian/lisensi|0|8|12
-4|Perbaikan atau upgrade hardware jika spesifikasi kurang|BAST|0|11|13
-4|Instalasi, aktivasi, dan pengujian seluruh software di semua PC|Berita acara instalasi|0|13|16
-4|Uji fungsi dengan data sampel (regresi, PLS-SEM, data panel)|Hasil uji, checklist|0|16|17
-4|Penyusunan SOP lab, jadwal penggunaan, dan penunjukan laboran/teknisi|SOP, SK laboran|0|18|20
-4|Pelatihan penggunaan software untuk dosen dan mahasiswa|Sertifikat, dokumentasi|0|20|24
-4|Pemeliharaan, update software, dan pencatatan penggunaan (berkelanjutan)|Logbook|1|21|52
-5|Penentuan ruang privat dan tim konselor (dosen PA, koordinator karier, psikolog kampus)|SK tim konseling|0|15|17
-5|Penataan ruang (kursi, meja, pencahayaan, privasi) dan pengadaan formulir|Foto ruang, BAST|0|18|20
-5|Penyusunan SOP layanan: konseling akademik, karier, pendampingan skripsi, kerahasiaan|Dokumen SOP|0|19|21
-5|Pembuatan form konseling, buku log, dan sistem pencatatan|Form, logbook|0|23|24
-5|Sosialisasi layanan ke mahasiswa (poster, media sosial, orientasi)|Dokumentasi|0|25|26
-5|Pelaksanaan layanan, rekap bulanan, dan survei kepuasan|Laporan layanan, hasil survei|1|27|52
-6|Pengumpulan dan pengarsipan bukti: SK, MoU, foto, BAST, logbook, laporan|Arsip bukti lengkap|0|23|43
-6|Penyusunan narasi sarana prasarana untuk LED/LKPS|Draf narasi LED/LKPS|0|40|43
-6|Simulasi visitasi internal (asesmen kecukupan dan asesmen lapangan)|Laporan simulasi|0|43|46
-6|Perbaikan temuan, finalisasi dokumen, dan penataan ruang akhir|Dokumen final|0|47|52
-7|Pembentukan tim penyusun DED dan DKPS, SK, serta pembagian tugas per kriteria|SK tim penyusun, surat tugas|0|3|6
-7|Pemetaan indikator dan bukti per kriteria berdasarkan Instrumen LAMEMBA terbaru|Matriks bukti per kriteria|0|6|12
-7|Verifikasi data PD-Dikti (dosen, tendik, mahasiswa) agar selaras dengan DKPS|Laporan verifikasi data|0|12|20
-7|Pengumpulan bukti Kriteria 1, 2, 4, dan 5 (tata kelola, SPMI, dosen, kurikulum, penelitian, PkM)|Arsip bukti per kriteria|0|18|40
-7|Pengisian tabel DKPS 1 sampai 8|DKPS lengkap|0|27|36
-7|Penulisan draf DED Bab II.B (evaluasi diri lima kriteria)|Draf DED Bab II.B|0|36|44
-7|Penulisan profil UPPS, analisis SWOT, strategi pengembangan, Bab I, Bab III, dan ringkasan eksekutif|Draf DED lengkap|0|40|47
-7|Penyuntingan akhir DED dan DKPS (A4, Calibri 12, spasi 1,5, 40–60 halaman), registrasi, dan unggah ke sistem LAMEMBA|DED, DKPS, dan dokumen pendukung terunggah|0|49|52`
-.split("\n").map((l,i)=>{
-const p=l.split("|");
-return{i,f:+p[0],t:p[1],o:p[2],ph:+p[3],s:+p[4],e:+p[5]}
-});
-
-const MSL=`SK tim persiapan akreditasi terbit|2
-Anggaran disetujui pimpinan|4
-Tax Center siap melayani (SOP selesai)|9
-Galeri Investasi diresmikan|16
-Lab Praktikum Audit siap (uji coba dan SOP)|22
-Lab Komputer siap dipakai (SOP dan laboran)|29
-Ruang Konseling mulai melayani|36
-Pengumpulan dan pengarsipan bukti selesai|38
-Draf narasi LED/LKPS selesai|39
-Simulasi visitasi internal selesai|40
-Dokumen final siap|41
-SK tim penyusun DED dan DKPS terbit|42
-Matriks bukti per kriteria selesai|43
-DKPS lengkap|46
-Draf DED lengkap|48
-DED dan DKPS terunggah ke LAMEMBA|49`
-.split("\n").map(l=>{
-const p=l.split("|");
-return{n:p[0],a:+p[1]-1}
-});
-
-const CK=`Semua fasilitas|SK pengelola;SOP;Jadwal penggunaan;Daftar inventaris;Foto ruang;Logbook penggunaan;Laporan tahunan
-Tax Center|MoU dengan DJP;Laporan layanan SPT;Sertifikat relawan pajak
-Galeri Investasi|MoU dengan sekuritas;Surat pengesahan galeri;Laporan edukasi atau transaksi
-Lab Audit|Modul praktikum;Kertas kerja contoh;Lisensi software
-Lab Komputer|Bukti lisensi;Berita acara instalasi;Hasil uji coba
-Ruang Konseling|SOP kerahasiaan;Rekap layanan;Hasil survei kepuasan`
-.split("\n").flatMap(l=>{
-const[f,s]=l.split("|");
-return s.split(";").map(b=>({f,b}))
-}).map((x,i)=>({...x,i}));
-
-const NOTES=[
-"Pastikan semua software berlisensi resmi, karena asesor biasanya memeriksa legalitasnya.",
-"Fasilitas yang baru berdiri paling lambat 6 bulan sebelum visitasi, supaya ada bukti operasional yang cukup.",
-"Hubungkan setiap fasilitas dengan mata kuliah, penelitian, dan pengabdian masyarakat agar terlihat manfaatnya dalam pembelajaran.",
-"Ketentuan MoU, perizinan Galeri Investasi, dan akses sistem pajak bisa berubah; konfirmasi ke pihak terkait (BEI, sekuritas, DJP).",
-"Asumsi: timeline 12 bulan, mulai November 2026. Geser tanggal mulai di bagian atas halaman sesuai jadwal pengajuan atau visitasi akreditasi.",
-"Jadwal per kegiatan adalah usulan awal. Sesuaikan dengan anggaran, pengadaan, dan kalender akademik kampus.",
-"Acuan kriteria: Instrumen Akreditasi LAMEMBA untuk Status Terakreditasi (diperbarui 12 Januari 2026), yaitu lima kriteria dengan dokumen DED dan DKPS. Jika Prodi menargetkan peringkat di atas Terakreditasi atau LAMEMBA menerbitkan versi baru, sesuaikan daftar kriteria dan butir bukti di tab Kriteria."
+const kriteria = [
+["Kriteria 1","Tata pamong dan tata kelola"],
+["Kriteria 1","Sistem penjaminan mutu internal"],
+["Kriteria 2","Kecukupan dan kualifikasi dosen"],
+["Kriteria 2","Pengelolaan tenaga kependidikan"],
+["Kriteria 3","Pengelolaan keuangan"],
+["Kriteria 3","Sarana dan prasarana pendukung"],
+["Kriteria 4","Kurikulum dan pembelajaran"],
+["Kriteria 4","Evaluasi hasil pembelajaran"],
+["Kriteria 5","Penelitian dosen"],
+["Kriteria 5","Pengabdian kepada masyarakat"]
 ];
 
-const KG={
-K1:"Kriteria 1. Tata pamong dan tata kelola",
-K2:"Kriteria 2. Pengelolaan dosen dan tenaga kependidikan",
-K3:"Kriteria 3. Keuangan dan sarana prasarana",
-K4:"Kriteria 4. Pendidikan dan pengajaran",
-K5:"Kriteria 5. Penelitian dan pengabdian kepada masyarakat",
-DED:"Dokumen Evaluasi Diri (DED)",
-DKPS:"Dokumen Kinerja Program Studi (DKPS)"
-};
-
-const KI=`K1|Tata pamong|Struktur dan proses tata pamong UPPS/PS terdokumentasi
-K1|Tata pamong|Bukti pengawasan, sinergi, penyediaan sumber daya, dan penguatan nilai sesuai misi dan visi
-K1|Tata kelola|Bukti perencanaan, pengorganisasian, pengarahan, dan pengendalian untuk mencapai visi dan tujuan
-K1|Tata kelola|Bukti tata kelola yang akuntabel, transparan, adil, dan bebas konflik kepentingan
-K1|Tata kelola|Bukti SPMI berjalan konsisten, laporan mutu berkala, dan tindak lanjutnya
-K2|Kecukupan dan kualifikasi dosen|Kriteria kualifikasi dosen; minimal lima dosen tetap sesuai fokus Tridharma
-K2|Kecukupan dan kualifikasi dosen|Matriks rencana dan pelaksanaan penugasan dosen di PS yang dikelola UPPS
-K2|Kecukupan dan kualifikasi dosen|Beban kerja dosen konsisten dengan fokus Tridharma
-K2|Pengelolaan dosen|Rencana dan pelaksanaan rekrutmen serta pengembangan dosen
-K2|Pengelolaan dosen|Dukungan dan fasilitas bagi dosen (pendidikan, praktik profesional, kerjasama, rekognisi bidang EMBA)
-K2|Pengelolaan dosen|Evaluasi rekrutmen, pengembangan, dan kinerja dosen secara sistematik
-K2|Kecukupan dan kualifikasi tenaga kependidikan|Kriteria jumlah dan kualifikasi tendik (minimal dua untuk layanan, satu untuk perpustakaan)
-K2|Kecukupan dan kualifikasi tenaga kependidikan|Kualifikasi tendik sesuai tugas yang diemban
-K2|Pengelolaan tenaga kependidikan|Rencana rekrutmen dan pengembangan tendik yang sistematik
-K2|Pengelolaan tenaga kependidikan|Jumlah dan kualifikasi tendik sesuai kebutuhan dan selaras dengan visi
-K3|Keuangan|Rencana penerimaan dan penggunaan dana untuk operasional dan investasi
-K3|Keuangan|Upaya dan hasil menjamin keberlanjutan sumber keuangan
-K3|Sarana dan prasarana|Penyediaan, pengelolaan, dan rencana pengembangan sarana prasarana untuk Tridharma
-K3|Sarana dan prasarana|Sarana prasarana memenuhi standar kebersihan, kesehatan, keamanan, keselamatan, setara gender, dan ramah difabel
-K4|Kurikulum|Peta kurikulum konsisten dengan CPL serta misi dan visi
-K4|Kurikulum|Implementasi kurikulum melibatkan mahasiswa dan dosen secara aktif
-K4|Kurikulum|Materi dan metode pembelajaran mutakhir sesuai kebutuhan bidang EMBA
-K4|Kurikulum|Evaluasi dan pengembangan kurikulum bersama pemangku kepentingan
-K4|Jaminan pembelajaran|Analisis dan evaluasi hasil pembelajaran
-K4|Jaminan pembelajaran|Intervensi tindak lanjut dari hasil evaluasi pembelajaran
-K5|Penelitian|Kegiatan dan hasil penelitian meningkatkan kompetensi dosen
-K5|Penelitian|Penelitian terintegrasi dalam evaluasi kinerja dosen
-K5|Pengabdian kepada masyarakat|Kegiatan dan hasil PkM meningkatkan kompetensi dosen dan masyarakat
-K5|Pengabdian kepada masyarakat|PkM terintegrasi dalam evaluasi kinerja dosen
-DED|Bagian awal|Identitas pengusul, identitas tim, kata pengantar, dan ringkasan eksekutif (maks. 3 halaman)
-DED|Bab I Pendahuluan|Tim penyusun, surat tugas, keterlibatan pemangku kepentingan, dan mekanisme kerja
-DED|Bab II Dokumen evaluasi diri|A. Profil UPPS dan analisis kondisi internal serta eksternal (maks. 6 halaman)
-DED|Bab II Dokumen evaluasi diri|B.1 Evaluasi diri Tata pamong dan tata kelola
-DED|Bab II Dokumen evaluasi diri|B.2 Evaluasi diri Pengelolaan dosen dan tenaga kependidikan
-DED|Bab II Dokumen evaluasi diri|B.3 Evaluasi diri Keuangan dan sarana prasarana
-DED|Bab II Dokumen evaluasi diri|B.4 Evaluasi diri Pendidikan dan pengajaran
-DED|Bab II Dokumen evaluasi diri|B.5 Evaluasi diri Penelitian dan pengabdian kepada masyarakat
-DED|Bab II Dokumen evaluasi diri|C. Analisis SWOT, strategi pengembangan, dan keberlanjutan
-DED|Bab III Penutup|Penutup dan kesimpulan akhir (maks. 3 halaman)
-DED|Bab III Penutup|Format akhir: A4, Calibri 12, spasi 1,5, total 40–60 halaman
-DKPS|Sumber daya manusia|Tabel 1. Profil dosen berdasarkan status kepegawaian
-DKPS|Sumber daya manusia|Tabel 2. Profil dosen berdasarkan latar belakang keahlian
-DKPS|Sumber daya manusia|Tabel 3. Profil dosen berdasarkan kontribusi intelektual (3a pendidikan dan pengajaran, 3b penelitian dan PkM)
-DKPS|Sumber daya manusia|Tabel 4. Ekuivalensi waktu mengajar penuh (EWMP)
-DKPS|Sumber daya manusia|Tabel 5. Profil tenaga kependidikan
-DKPS|Keuangan|Tabel 6. Profil keuangan program studi
-DKPS|Mahasiswa|Tabel 7. Jumlah mahasiswa aktif (cocokkan dengan PD-Dikti)
-DKPS|Luaran|Tabel 8. Luaran penelitian dan PkM yang dihasilkan dosen`
-.split("\n").map((l,i)=>{
-const p=l.split("|");
-return{i,g:p[0],d:p[1],t:p[2]}
-});
-
-const kS=x=>(st.k["k"+x.i]||{}).s||"Belum Mulai";
-
-function exportXl(){
-if(!window.XLSX||!DL)return toast("Ekspor belum tersedia di tampilan ini.");
-const wb=XLSX.utils.book_new();
-
-const act=A.map(a=>{
-const d=st.a["a"+a.i]||{};
-return{
-No:a.i+1,
-Fasilitas:FAS[a.f],
-Kegiatan:a.t,
-Output:a.o,
-Fase:a.ph?"Operasional":"Pelaksanaan",
-"Minggu mulai":a.s,
-"Minggu selesai":a.e,
-"Tanggal mulai":fmt(ws(a.s)),
-"Tanggal selesai":fmt(we(a.e)),
-Status:sOf(a),
-PIC:d.pic||"",
-Catatan:d.note||""
-}
-});
-
-const kr=KI.map(x=>{
-const d=st.k["k"+x.i]||{},o=st.k["own_"+x.g]||{};
-return{
-Bagian:KG[x.g],
-Dimensi:x.d,
-Butir:x.t,
-Status:kS(x),
-PIC:d.pic||"",
-"Penanggung jawab":o.pic||"",
-"Tautan":d.link||""
-}
-});
-
-const bk=CK.map(x=>{
-const d=st.c["c"+x.i]||{};
-return{
-Fasilitas:x.f,
-Bukti:x.b,
-Ada:d.ok?"Ya":"Belum",
-Tautan:d.link||""
-}
-});
-
-[["Kegiatan",act],["Kriteria",kr],["Bukti Fasilitas",bk]].forEach(([n,r])=>
-XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(r),n));
-
-const out=XLSX.write(wb,{type:"array",bookType:"xlsx"});
-DL.save({filename:"progres-akreditasi.xlsx",data:out})
-.then(()=>toast("File Excel disimpan."),e=>{
-if(!e||e.code!=="declined")toast("Gagal mengunduh file.")
-});
-}
-
-function vButir(gs){
-let h="";
-gs.forEach(g=>{
-const l=KI.filter(x=>x.g===g),c=l.filter(x=>kS(x)==="Selesai").length;
-
-h+=`<h2 style="margin-top:26px">${KG[g]}</h2>
-<div class="tools" style="align-items:center">
-<label for="own${g}" class="pill">Penanggung jawab:</label>
-<input type="text" id="own${g}" data-q="own_${g}" data-f="pic" placeholder="Nama koordinator" value="${esc((st.k["own_"+g]||{}).pic)}">
-</div>
-<div class="fr" style="grid-template-columns:1fr 56px">
-${seg([[c,SC.Selesai]],l.length)}
-<em>${c}/${l.length}</em>
-</div>`;
-
-if(g==="K3"){
-const f=A.filter(a=>a.f>=1&&a.f<=5);
-h+=`<p class="sub" style="margin:0 0 8px">
-Fasilitas pendukung (Tax Center, Galeri Investasi, Lab Audit, Lab Komputer, Ruang Konseling):
-${f.filter(a=>sOf(a)==="Selesai").length} dari ${f.length} kegiatan selesai.
-Rinciannya ada di tab Jadwal dan Kegiatan.
-</p>`
-}
-
-h+=`<div class="tbl"><table>
-<thead><tr>
-<th>Butir bukti</th><th>Status</th><th>PIC</th><th>Tautan atau lokasi arsip</th>
-</tr></thead><tbody>`;
-
-let pd="";
-l.forEach(x=>{
-if(x.d!==pd){
-h+=`<tr class="fh"><td colspan="4">${esc(x.d)}</td></tr>`;
-pd=x.d
-}
-const d=st.k["k"+x.i]||{},s=kS(x);
-
-h+=`<tr>
-<td>${esc(x.t)}</td>
-<td><select class="s-${s.replace(" ","")}" data-q="k${x.i}" data-f="s" aria-label="Status">
-${STS.map(y=>`<option${y===s?" selected":""}>${y}</option>`).join("")}
-</select></td>
-<td><input type="text" data-q="k${x.i}" data-f="pic" value="${esc(d.pic)}" aria-label="PIC"></td>
-<td><input type="text" data-q="k${x.i}" data-f="link" value="${esc(d.link)}" aria-label="Tautan"></td>
-</tr>`
-});
-
-h+=`</tbody></table></div>`
-});
-return h
-}
-
-const TABS=[
-["ringkasan","Ringkasan"],
-["jadwal","Jadwal Gantt"],
-["kegiatan","Kegiatan"],
-["kriteria","Kriteria"],
-["dokumen","DED dan DKPS"],
-["bukti","Bukti Fasilitas"],
-["catatan","Catatan"]
+const ded = [
+"Identitas pengusul dan tim penyusun",
+"Kata pengantar dan ringkasan eksekutif",
+"Bab I Pendahuluan",
+"Profil UPPS dan Program Studi",
+"Evaluasi diri Kriteria 1",
+"Evaluasi diri Kriteria 2",
+"Evaluasi diri Kriteria 3",
+"Evaluasi diri Kriteria 4",
+"Evaluasi diri Kriteria 5",
+"Analisis SWOT dan strategi pengembangan",
+"Bab III Penutup"
 ];
 
-let DL=null;
-let st={start:"2026-11-02",a:{},c:{},k:{}};
-let DB=null,tab="ringkasan",fF="",fS="";
+const dkps = [
+"Profil dosen berdasarkan status kepegawaian",
+"Profil dosen berdasarkan latar belakang pendidikan",
+"Kontribusi dosen dalam pendidikan dan pengajaran",
+"Kontribusi dosen dalam penelitian dan PkM",
+"Ekuivalensi waktu mengajar penuh",
+"Profil tenaga kependidikan",
+"Profil keuangan Program Studi",
+"Jumlah mahasiswa aktif",
+"Luaran penelitian dan pengabdian kepada masyarakat"
+];
 
-try{
-const l=JSON.parse(localStorage.getItem("akr")||"null");
-if(l)st=Object.assign(st,l)
-}catch(e){}
+const fasilitas = [
+["Seluruh Ruangan","Daftar inventaris dan foto ruangan"],
+["Seluruh Ruangan","Kebersihan, keamanan, dan keselamatan"],
+["Tax Center","SK pengelola, SOP, dan bukti layanan"],
+["Galeri Investasi","MoU dan laporan kegiatan"],
+["Laboratorium Audit","Modul praktikum dan perangkat lunak"],
+["Laboratorium Komputer","Daftar komputer dan lisensi perangkat lunak"],
+["Ruang Konseling","SOP layanan dan dokumentasi kegiatan"]
+];
 
-const $=s=>document.querySelector(s);
-const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({
-"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"
-}[c]));
+const status = ["Belum Mulai","Berjalan","Selesai","Terkendala"];
 
-const base=()=>{
-const[y,m,d]=st.start.split("-").map(Number);
-return Date.UTC(y,m-1,d)
-};
+function ambilData(kunci,awal){
+  try{return JSON.parse(localStorage.getItem(kunci)) || awal}
+  catch(e){return awal}
+}
+let dataKegiatan = ambilData("dataKegiatan",{});
+let dataKriteria = ambilData("dataKriteria",{});
+let dataDED = ambilData("dataDED",{});
+let dataDKPS = ambilData("dataDKPS",{});
+let dataFasilitas = ambilData("dataFasilitas",{});
 
-const T0=()=>{
-const t=new Date();
-return Date.UTC(t.getFullYear(),t.getMonth(),t.getDate())
-};
-
-const ws=w=>base()+(w-1)*7*MS;
-const we=w=>base()+w*7*MS-3*MS;
-
-const fmt=ms=>{
-const d=new Date(ms);
-return d.getUTCDate()+" "+BL[d.getUTCMonth()]+" "+d.getUTCFullYear()
-};
-
-const fs=ms=>{
-const d=new Date(ms);
-return d.getUTCDate()+" "+BL[d.getUTCMonth()]
-};
-
-const sOf=a=>(st.a["a"+a.i]||{}).s||"Belum Mulai";
-const late=a=>we(a.e)<T0()&&sOf(a)!=="Selesai";
-const wkNow=()=>Math.floor((T0()-base())/(7*MS))+1;
-
-function toast(m){
-const t=$("#toast");
-t.textContent=m;
-t.style.display="block";
-clearTimeout(toast.h);
-toast.h=setTimeout(()=>t.style.display="none",3500)
+function pilihanStatus(kunci,nomor,data){
+  return `<select onchange="ubah('${kunci}',${nomor},'status',this.value)">
+    ${status.map(s=>`<option ${((data[nomor]||{}).status||"Belum Mulai")===s?"selected":""}>${s}</option>`).join("")}
+  </select>`;
 }
 
-function save(kind,id,patch){
-st[kind][id]=Object.assign({},st[kind][id],patch);
-
-if(DB)
-DB.doc(({a:"act/",c:"chk/",k:"krit/"})[kind]+id)
-.set(st[kind][id])
-.catch(()=>toast("Gagal menyimpan: akun ini mungkin hanya punya akses lihat."));
-else try{
-localStorage.setItem("akr",JSON.stringify(st))
-}catch(e){}
-
-render()
+function kolomPIC(kunci,nomor,data){
+  return `<input type="text" value="${(data[nomor]||{}).pic||""}"
+  onchange="ubah('${kunci}',${nomor},'pic',this.value)" placeholder="Nama penanggung jawab">`;
 }
 
-function setStart(v){
-const d=new Date(v+"T00:00:00Z");
-if(isNaN(d))return;
-d.setUTCDate(d.getUTCDate()-(d.getUTCDay()+6)%7);
-st.start=d.toISOString().slice(0,10);
-
-if(DB)
-DB.doc("cfg/main").set({start:st.start})
-.catch(()=>toast("Gagal menyimpan tanggal mulai."));
-else try{
-localStorage.setItem("akr",JSON.stringify(st))
-}catch(e){}
-
-render()
+function ubah(kunci,nomor,kolom,nilai){
+  const semua={
+    dataKegiatan,dataKriteria,dataDED,dataDKPS,dataFasilitas
+  };
+  let obj=semua[kunci];
+  obj[nomor]=obj[nomor]||{};
+  obj[nomor][kolom]=nilai;
+  localStorage.setItem(kunci,JSON.stringify(obj));
+  perbaruiRingkasan();
 }
 
-const seg=(arr,tot)=>`<div class="seg">
-${arr.map(([n,c])=>`<i style="width:${tot?n/tot*100:0}%;background:${c}"></i>`).join("")}
-</div>`;
-
-const cnt=list=>{
-const r={};
-STS.forEach(s=>r[s]=0);
-list.forEach(a=>r[sOf(a)]++);
-return r
-};
-
-function vRingkasan(){
-const c=cnt(A),n=A.length,w=wkNow(),inRange=w>=1&&w<=52;
-const act=A.filter(a=>sOf(a)!=="Selesai"&&inRange&&a.s<=w&&a.e>=w);
-const lt=A.filter(late);
-
-let h=`<p class="hero">
-<b>${c.Selesai} dari ${n}</b> kegiatan selesai, ${c.Berjalan} berjalan
-${c.Terkendala?`, ${c.Terkendala} terkendala`:""}.
-</p>
-${seg([[c.Selesai,SC.Selesai],[c.Berjalan,SC.Berjalan],[c.Terkendala,SC.Terkendala]],n)}
-<div class="leg">
-${[["Selesai","var(--ok)"],["Berjalan","var(--run)"],["Terkendala","var(--bad)"],["Belum mulai","var(--soft)"]].map(([t,col])=>`<span style="--c:${col}">${t}</span>`).join("")}
-</div>
-<div class="cols"><div>`;
-
-h+=`<h2>Progres per fasilitas</h2>`+
-FAS.map((f,fi)=>{
-const l=A.filter(a=>a.f===fi),k=cnt(l);
-return`<div class="fr"><span>${esc(f)}</span>${seg([[k.Selesai,SC.Selesai],[k.Berjalan,SC.Berjalan],[k.Terkendala,SC.Terkendala]],l.length)}<em>${k.Selesai}/${l.length}</em></div>`
-}).join("");
-
-h+=`<h2 style="margin-top:28px">Kesiapan dokumen akreditasi</h2>`+
-Object.keys(KG).map(g=>{
-const l=KI.filter(x=>x.g===g),k={};
-STS.forEach(s=>k[s]=0);
-l.forEach(x=>k[kS(x)]++);
-return`<div class="fr"><span>${esc(KG[g].replace(/^Kriteria (\d)\. /,"K$1 "))}</span>${seg([[k.Selesai,SC.Selesai],[k.Berjalan,SC.Berjalan],[k.Terkendala,SC.Terkendala]],l.length)}<em>${k.Selesai}/${l.length}</em></div>`
-}).join("");
-
-h+=`<h2 style="margin-top:28px">
-${inRange?`Minggu ke-${w} (${fs(ws(w))} – ${fs(we(w))})`:"Di luar periode proyek"}
-</h2>`;
-
-h+=lt.length?
-`<div class="item late">${lt.length} kegiatan melewati tanggal selesai</div>`+
-lt.slice(0,6).map(a=>`<div class="item">${esc(a.t)}<small class="late">Seharusnya selesai ${fmt(we(a.e))} · ${esc(FAS[a.f])}</small></div>`).join("")
-:"";
-
-h+=act.length?
-act.map(a=>`<div class="item">${esc(a.t)}<small>${esc(FAS[a.f])} · sampai ${fmt(we(a.e))} · ${sOf(a)}</small></div>`).join("")
-:(inRange||lt.length?"":`<div class="item"><small>Proyek belum dimulai. Minggu 1 jatuh pada ${fmt(ws(1))}.</small></div>`);
-
-if(inRange&&!act.length&&!lt.length)
-h+=`<div class="item"><small>Tidak ada kegiatan aktif minggu ini.</small></div>`;
-
-h+=`</div><div><h2>Milestone</h2><ul class="ms">`+
-[...MSL].sort((x,y)=>A[x.a].e-A[y.a].e).map(m=>{
-const a=A[m.a],d=sOf(a)==="Selesai",o=late(a);
-return`<li class="${d?"d":o?"o":""}">${esc(m.n)}<small>${fmt(we(a.e))}${d?" · tercapai":o?" · terlewat":""}</small></li>`
-}).join("")+
-`</ul></div></div>`;
-
-return h
+function tampilKegiatan(){
+  const tbody=document.querySelector("#tabelKegiatan tbody");
+  tbody.innerHTML=kegiatan.map((x,i)=>`
+  <tr>
+    <td>${i+1}</td><td>${x[0]}</td><td>${x[1]}</td>
+    <td>Minggu ${x[2]}–${x[3]}</td>
+    <td>${pilihanStatus("dataKegiatan",i,dataKegiatan)}</td>
+    <td>${kolomPIC("dataKegiatan",i,dataKegiatan)}</td>
+    <td><input type="text" value="${(dataKegiatan[i]||{}).catatan||""}"
+      onchange="ubah('dataKegiatan',${i},'catatan',this.value)"></td>
+  </tr>`).join("");
 }
 
-function vJadwal(){
-const tw=52*W;
-let mo="",pm=-1;
-
-for(let i=1;i<=52;i++){
-const m=new Date(ws(i)+3*MS).getUTCMonth();
-if(m!==pm){
-mo+=`<span class="mo" style="left:${(i-1)*W}px">${BL[m]}</span>`;
-pm=m
-}
+function isiTabel(id,daftar,kunci,data){
+  document.querySelector(`#${id} tbody`).innerHTML=daftar.map((x,i)=>{
+    const nama=Array.isArray(x)?x.join(" – "):x;
+    return `<tr><td>${i+1}</td><td>${nama}</td>
+    <td>${pilihanStatus(kunci,i,data)}</td>
+    <td>${kolomPIC(kunci,i,data)}</td></tr>`;
+  }).join("");
 }
 
-let h=`<div class="gwrap"><div class="gin">
-<div class="gr h">
-<div class="gl f">Minggu 1–52 (${fs(ws(1))} – ${fs(we(52))})</div>
-<div class="gt">${mo}</div>
-</div>`;
+function tampilFasilitas(){
+  document.querySelector("#tabelFasilitas tbody").innerHTML=fasilitas.map((x,i)=>`
+  <tr><td>${i+1}</td><td>${x[0]}</td><td>${x[1]}</td>
+  <td>${pilihanStatus("dataFasilitas",i,dataFasilitas)}</td>
+  <td><input type="text" value="${(dataFasilitas[i]||{}).catatan||""}"
+  onchange="ubah('dataFasilitas',${i},'catatan',this.value)"></td></tr>
+  `).join("");
+}
 
-FAS.forEach((f,fi)=>{
-const l=A.filter(a=>a.f===fi),s=Math.min(...l.map(a=>a.s)),e=Math.max(...l.map(a=>a.e));
+function buka(id,tombol){
+  document.querySelectorAll(".halaman").forEach(x=>x.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+  document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
+  tombol.classList.add("active");
+}
 
-h+=`<div class="gr">
-<div class="gl f" title="${esc(f)}">${esc(f)}</div>
-<div class="gt"><div class="bar sp" style="left:${(s-1)*W}px;width:${(e-s+1)*W}px"></div></div>
-</div>`;
+function perbaruiRingkasan(){
+  const semua=Object.values(dataKegiatan);
+  const jumlah=kegiatan.length;
+  const selesai=semua.filter(x=>x.status==="Selesai").length;
+  const berjalan=semua.filter(x=>x.status==="Berjalan").length;
+  const belum=jumlah-selesai-berjalan-
+    semua.filter(x=>x.status==="Terkendala").length;
+  const persen=Math.round(selesai/jumlah*100);
+  document.getElementById("total").textContent=jumlah;
+  document.getElementById("selesai").textContent=selesai;
+  document.getElementById("berjalan").textContent=berjalan;
+  document.getElementById("belum").textContent=belum;
+  document.getElementById("bar").style.width=persen+"%";
+  document.getElementById("persen").textContent=persen+"% kegiatan selesai";
+}
 
-l.forEach(a=>{
-const s2=sOf(a),col=s2==="Belum Mulai"?(a.ph?"var(--b1)":"var(--b0)"):SC[s2];
+function simpanCatatan(){
+  localStorage.setItem("catatanUmum",document.getElementById("catatanUmum").value);
+  document.getElementById("pesanCatatan").textContent="Catatan berhasil disimpan.";
+}
 
-h+=`<div class="gr">
-<div class="gl" title="${esc(a.t)}">${a.i+1}. ${esc(a.t)}</div>
-<div class="gt">
-<div class="bar" title="${esc(fs(ws(a.s))+" – "+fs(we(a.e))+" · "+s2)}" style="left:${(a.s-1)*W}px;width:${(a.e-a.s+1)*W}px;background:${col}"></div>
-</div></div>`
-})
+function eksporCSV(){
+  let baris=[["No","Bidang","Kegiatan","Minggu Mulai","Minggu Selesai","Status","Penanggung Jawab"]];
+  kegiatan.forEach((x,i)=>{
+    const d=dataKegiatan[i]||{};
+    baris.push([i+1,x[0],x[1],x[2],x[3],d.status||"Belum Mulai",d.pic||""]);
+  });
+  const csv=baris.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\n");
+  const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"});
+  const link=document.createElement("a");
+  link.href=URL.createObjectURL(blob);
+  link.download="Laporan_Peta_Jalan_Akreditasi.csv";
+  link.click();
+  URL.revokeObjectURL(link.href);
+}
+
+document.getElementById("catatanUmum").value=localStorage.getItem("catatanUmum")||"";
+document.getElementById("tanggal").addEventListener("change",e=>{
+  localStorage.setItem("tanggalMulai",e.target.value);
 });
 
-const tp=(T0()-base())/(7*MS)*W;
-if(tp>=0&&tp<=tw)
-h+=`<div class="tl" style="left:${250+tp}px" title="Hari ini"></div>`;
-
-return h+`</div></div>
-<div class="leg">
-<span style="--c:var(--b0)">Pelaksanaan (belum mulai)</span>
-<span style="--c:var(--b1)">Operasional</span>
-<span style="--c:var(--run)">Berjalan</span>
-<span style="--c:var(--ok)">Selesai</span>
-<span style="--c:var(--bad)">Terkendala</span>
-<span style="--c:var(--today)">Hari ini</span>
-</div>`
-}
-
-function vKegiatan(){
-let h=`<div class="tools">
-<select id="ff" aria-label="Filter fasilitas">
-<option value="">Semua fasilitas</option>
-${FAS.map((f,i)=>`<option value="${i}"${fF===""+i?" selected":""}>${esc(f)}</option>`).join("")}
-</select>
-<select id="fs" aria-label="Filter status">
-<option value="">Semua status</option>
-${STS.map(s=>`<option${fS===s?" selected":""}>${s}</option>`).join("")}
-</select>
-</div>
-<div class="tbl"><table>
-<thead><tr><th>No</th><th>Kegiatan dan output</th><th>Waktu</th><th>Status</th><th>PIC</th><th>Catatan</th></tr></thead><tbody>`;
-
-let pf=-1;
-
-A.filter(a=>(fF===""||a.f===+fF)&&(fS===""||sOf(a)===fS)).forEach(a=>{
-if(a.f!==pf){
-h+=`<tr class="fh"><td colspan="6">${esc(FAS[a.f])}</td></tr>`;
-pf=a.f
-}
-
-const d=st.a["a"+a.i]||{},s=sOf(a);
-
-h+=`<tr>
-<td>${a.i+1}</td>
-<td>${esc(a.t)}<small>Bukti: ${esc(a.o)}</small></td>
-<td>${fs(ws(a.s))} – ${fs(we(a.e))}<small>Minggu ${a.s}–${a.e}${late(a)?` · <span class="late">terlambat</span>`:""}</small></td>
-<td><select class="s-${s.replace(" ","")}" data-k="a${a.i}" data-f="s" aria-label="Status kegiatan ${a.i+1}">
-${STS.map(x=>`<option${x===s?" selected":""}>${x}</option>`).join("")}
-</select></td>
-<td><input type="text" data-k="a${a.i}" data-f="pic" value="${esc(d.pic)}" aria-label="PIC kegiatan ${a.i+1}"></td>
-<td><input type="text" data-k="a${a.i}" data-f="note" value="${esc(d.note)}" aria-label="Catatan kegiatan ${a.i+1}"></td>
-</tr>`
-});
-
-return h+`</tbody></table></div>`
-}
-
-function vBukti(){
-const ok=CK.filter(x=>(st.c["c"+x.i]||{}).ok).length;
-let h=`<p class="hero"><b>${ok} dari ${CK.length}</b> bukti tersedia.</p>
-${seg([[ok,"var(--ok)"]],CK.length)}
-<div style="height:22px"></div>`,pf="";
-
-CK.forEach(x=>{
-const d=st.c["c"+x.i]||{};
-if(x.f!==pf){
-h+=`<h2 style="margin-top:20px">${esc(x.f)}</h2>`;
-pf=x.f
-}
-h+=`<div class="chk${d.ok?" on":""}">
-<input type="checkbox" data-c="c${x.i}" ${d.ok?"checked":""} aria-label="${esc(x.b)}">
-<span>${esc(x.b)}</span>
-<input type="text" data-c="c${x.i}" data-l="1" placeholder="Lokasi arsip atau tautan" value="${esc(d.link)}" aria-label="Tautan ${esc(x.b)}">
-</div>`
-});
-
-return h
-}
-
-const vCatatan=()=>`<h2>Catatan penting</h2><ol class="n">${NOTES.map(n=>`<li>${esc(n)}</li>`).join("")}</ol>`;
-
-function render(){
-$("#nav").innerHTML=TABS.map(([k,l])=>
-`<button data-t="${k}" ${k===tab?'aria-current="true"':""}>${l}</button>`
-).join("");
-
-$("#st").value=st.start;
-$("#sync").textContent=DB?"Tersimpan dan dibagikan ke tim":"Mode lokal: tersimpan di peramban ini saja";
-
-$("#app").innerHTML=({
-ringkasan:vRingkasan,
-jadwal:vJadwal,
-kegiatan:vKegiatan,
-bukti:vBukti,
-kriteria:()=>vButir(["K1","K2","K3","K4","K5"]),
-dokumen:()=>vButir(["DED","DKPS"]),
-catatan:vCatatan
-})[tab]()
-}
-
-document.addEventListener("click",e=>{
-if(e.target.id==="xl")return exportXl();
-const b=e.target.closest("[data-t]");
-if(b){
-tab=b.dataset.t;
-location.hash=tab;
-render()
-}
-});
-
-document.addEventListener("change",e=>{
-const t=e.target;
-if(t.id==="st")return setStart(t.value);
-if(t.id==="ff"){fF=t.value;return render()}
-if(t.id==="fs"){fS=t.value;return render()}
-if(t.dataset.k)save("a",t.dataset.k,{[t.dataset.f]:t.value});
-else if(t.dataset.q)save("k",t.dataset.q,{[t.dataset.f]:t.value});
-else if(t.dataset.c)save("c",t.dataset.c,t.dataset.l?{link:t.value}:{ok:t.checked})
-});
-
-addEventListener("hashchange",()=>{
-const h=location.hash.slice(1);
-if(TABS.some(t=>t[0]===h)){
-tab=h;
-render()
-}
-});
-
-{
-const h=location.hash.slice(1);
-if(TABS.some(t=>t[0]===h))tab=h
-}
-
-render();
-
-(async()=>{
-try{
-const c=window.claude;
-if(!c)return;
-const db=await c.use("db");
-if(!db)return;
-DB=db;
-
-db.collection("act").onSnapshot(s=>{
-st.a={};
-s.docs.forEach(d=>st.a[d.id]=d.data());
-render()
-},()=>{});
-
-db.collection("chk").onSnapshot(s=>{
-st.c={};
-s.docs.forEach(d=>st.c[d.id]=d.data());
-render()
-},()=>{});
-
-db.collection("krit").onSnapshot(s=>{
-st.k={};
-s.docs.forEach(d=>st.k[d.id]=d.data());
-render()
-},()=>{});
-
-db.doc("cfg/main").onSnapshot(s=>{
-const d=s.data();
-if(d&&d.start){
-st.start=d.start;
-render()
-}
-},()=>{});
-
-render()
-}catch(e){}
-})();
-
-(async()=>{
-try{
-const c=window.claude;
-if(!c)return;
-const d=await c.use("downloads");
-if(!d)return;
-DL=d;
-$("#xl").hidden=false
-}catch(e){}
-})();
+tampilKegiatan();
+isiTabel("tabelKriteria",kriteria,"dataKriteria",dataKriteria);
+isiTabel("tabelDED",ded,"dataDED",dataDED);
+isiTabel("tabelDKPS",dkps,"dataDKPS",dataDKPS);
+tampilFasilitas();
+perbaruiRingkasan();
 </script>
 </body>
 </html>
